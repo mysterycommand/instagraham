@@ -12,13 +12,26 @@ class PhotosViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var photos:[NSDictionary]?
+    var refreshControl:UIRefreshControl?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        self.tableView?.rowHeight = 320
+        self.refreshControl = UIRefreshControl()
+        
+        self.refreshControl?.addTarget(self, action: "updatePhotos", forControlEvents: UIControlEvents.ValueChanged)
+        
+        self.tableView.insertSubview(self.refreshControl!, atIndex:0)
+        
+        updatePhotos()
+    }
 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func updatePhotos() {
         var clientId = "41cd0066b82f47e69db868af15c4b370"
         var url = NSURL(string: "https://api.instagram.com/v1/media/popular?client_id=\(clientId)")!
         
@@ -27,15 +40,10 @@ class PhotosViewController: UIViewController {
             var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as! NSDictionary
             
             self.photos = responseDictionary["data"] as? [NSDictionary]
-
+            
             self.tableView.reloadData()
+            self.refreshControl?.endRefreshing()
         }
-        
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
