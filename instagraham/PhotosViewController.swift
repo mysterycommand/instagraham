@@ -19,15 +19,14 @@ class PhotosViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.tableView?.rowHeight = 320
 
-
         var clientId = "41cd0066b82f47e69db868af15c4b370"
         var url = NSURL(string: "https://api.instagram.com/v1/media/popular?client_id=\(clientId)")!
+        
         var request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as! NSDictionary
             
             self.photos = responseDictionary["data"] as! [NSDictionary]
-            
 
             self.tableView.reloadData()
         }
