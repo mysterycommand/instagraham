@@ -26,7 +26,7 @@ class PhotosViewController: UIViewController {
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             var responseDictionary = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as! NSDictionary
             
-            self.photos = responseDictionary["data"] as! [NSDictionary]
+            self.photos = responseDictionary["data"] as? [NSDictionary]
 
             self.tableView.reloadData()
         }
@@ -56,5 +56,17 @@ class PhotosViewController: UIViewController {
         cell.photoView?.setImageWithURL(imageUrl!)
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let destinationView = segue.destinationViewController as! PhotoDetailsViewController
+        let indexPath = tableView.indexPathForCell(sender as! UITableViewCell)!
+        
+        let photo = photos![indexPath.row]
+        destinationView.photo = photo
     }
 }
