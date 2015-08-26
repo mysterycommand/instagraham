@@ -1,8 +1,10 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, '6.0'
 
-target 'instagraham' do
+source 'https://github.com/CocoaPods/Specs.git'
 
+target 'instagraham' do
+	pod 'AFNetworking'
 end
 
 target 'instagrahamTests' do
