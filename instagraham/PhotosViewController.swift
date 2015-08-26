@@ -52,7 +52,7 @@ class PhotosViewController: UIViewController {
         
         let photo = photos![indexPath.row]
         
-        let imageUrl = NSURL(string: photo.valueForKeyPath("images.thumbnail.url") as! String)
+        let imageUrl = NSURL(string: photo.valueForKeyPath("images.low_resolution.url") as! String)
         
         cell.photoView?.setImageWithURL(imageUrl!)
         
